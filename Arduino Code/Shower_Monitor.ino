@@ -1,4 +1,4 @@
-// Version 1.1 (initial public release)
+// Version 1.1.1 (initial public release)
 // Copyright © 2019 Liam Smolenaars
 // If you require a license, see
 // https://opensource.org/licenses/BSD-3-Clause
@@ -96,7 +96,7 @@ void loop() {
   if (abs(millis() - last_time) > INTERVAL) {
     last_time = millis(); // set last update time to present time
     lcd.setCursor(7, 0);
-    lcd.print(String(count / 450.0) + " L"); // calcluate and print total litres
+    lcd.print(String(count / 450.0) + " L  "); // calcluate and print total litres
     lcd.setCursor(7, 1);
     if (mode) { // flow-rate mode, display current flow rate
       lcd.print(String(1000 * (count - last_count) / 450.0 / INTERVAL) + (" L/s   "));
