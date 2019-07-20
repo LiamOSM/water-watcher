@@ -1,4 +1,4 @@
-// Version 1.1.1 (initial public release)
+// Version 1.1.2 (initial public release)
 // Copyright © 2019 Liam Smolenaars
 // If you require a license, see
 // https://opensource.org/licenses/BSD-3-Clause
@@ -33,6 +33,9 @@
 const byte SENSOR = 2;     // sensor on digital pin 2 (int0)
 const byte BUTTON = 3;     // button on digital pin 3 (int1)
 const byte ADDRESS = 0x27; // i2c address for the LCD (0x3F & 0x27 are common)
+
+const float CONVERSION = 450.0; // keep this uncommented for litres
+// const float CONVERSION = 1703.0; // uncomment this and delete the line above for gallons
 
 unsigned long count = 0;      // number of pulses from flow sensor (one pulse is 1/450th of a litre)
 unsigned long last_count = 0; // timer to track last pulse from sensor
@@ -96,13 +99,13 @@ void loop() {
   if (abs(millis() - last_time) > INTERVAL) {
     last_time = millis(); // set last update time to present time
     lcd.setCursor(7, 0);
-    lcd.print(String(count / 450.0) + " L  "); // calcluate and print total litres
+    lcd.print(String(count / CONVERSION) + " L  "); // calcluate and print total litres
     lcd.setCursor(7, 1);
     if (mode) { // flow-rate mode, display current flow rate
-      lcd.print(String(1000 * (count - last_count) / 450.0 / INTERVAL) + (" L/s   "));
+      lcd.print(String(1000 * (count - last_count) / CONVERSION / INTERVAL) + (" L/s   "));
     }
     else { // cost mode, display total cost
-      lcd.print(String(COST_PER_LITRE * count / 450.0) + " ");
+      lcd.print(String(COST_PER_LITRE * count / CONVERSION) + " ");
       lcd.write(byte(0)); // print cents sign (¢)
       lcd.print("   "); // print trailing spaces to clear extraneous chars
     }
